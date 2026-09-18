@@ -809,7 +809,7 @@ footer a{color:var(--coral-2)}
 
 <script>
 /* ====== CONFIG (>> CONFIRMAR) ====== */
-var CHECKOUT_URL = "";                 // URL do checkout final (após o lead). Vazio = fica na tela de sucesso.
+var CHECKOUT_URL = "https://go.convivereaprender.com.br/pay/oferta-de-lancamento-pcm-setembro-2026"; // Guru — checkout turma set/2026
 var LEAD_WEBHOOK = "https://hook.us2.make.com/ocxf5xmykxu86k5z1bhuheag73p3wiy8"; // Make — Leads Pré Checkout PCM SP
 var VALOR = 1800;
 function getCookie(n){var m=document.cookie.match('(^|;)\\s*'+n+'\\s*=\\s*([^;]+)');return m?m.pop():'';}
@@ -853,7 +853,7 @@ modal.addEventListener('click',function(e){if(e.target===modal)closeLead()});
 
 /* ====== SUBMISSÃO: Lead + InitiateCheckout (mantém o evento otimizado) → comercial → checkout ====== */
 var icFired=false;
-function handleLead(form, onDone){
+function handleLead(form, onDone, goCheckout){
   form.addEventListener('submit',function(e){
     e.preventDefault();
     var data=Object.fromEntries(new FormData(form).entries());
@@ -879,17 +879,17 @@ function handleLead(form, onDone){
     console.log('LEAD →', data);
     onDone();
     // Depois do lead, segue para o checkout (se configurado)
-    if(CHECKOUT_URL){var u=new URL(CHECKOUT_URL);(new URLSearchParams(location.search)).forEach(function(v,k){u.searchParams.set(k,v)});setTimeout(function(){location.href=u.toString()},1400);}
+    if(goCheckout&&CHECKOUT_URL){var u=new URL(CHECKOUT_URL);(new URLSearchParams(location.search)).forEach(function(v,k){u.searchParams.set(k,v)});setTimeout(function(){location.href=u.toString()},1400);}
   });
 }
 handleLead(document.getElementById('leadFormModal'),function(){
   document.getElementById('modalForm').style.display='none';
   document.getElementById('modalOk').classList.add('show');
-});
+}, true);
 handleLead(document.getElementById('leadFormInline'),function(){
   var f=document.getElementById('leadFormInline');
   f.innerHTML='<div style="text-align:center;padding:10px 0"><div style="width:56px;height:56px;border-radius:50%;background:var(--emerald-soft);color:var(--emerald);display:grid;place-items:center;margin:0 auto 12px"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg></div><h3 style="color:#fff;font-family:var(--disp);font-size:22px">Recebemos seus dados!</h3><p style="color:var(--muted-d);margin-top:8px">Nossa equipe entra em contato no seu WhatsApp.</p></div>';
-});
+}, false);
 
 /* Popup NÃO abre sozinho: só pelo botão da seção de oferta (sem exit-intent, sem scroll). */
 
