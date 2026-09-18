@@ -39,13 +39,13 @@ fbq('track','PageView');
  src="https://www.facebook.com/tr?id=123997336332020&ev=PageView&noscript=1"></noscript>
 
 <!-- ============== GOOGLE TAG MANAGER (adiado, só Google Ads/Analytics — NUNCA o Pixel da Meta) ==============
-     >> CONFIRMAR: trocar GTM-XXXXXXX pelo ID real do container. -->
+     Container: GTM-PVF29H4 -->
 <script>
 (function(w,d){var loaded=false;
   function loadGTM(){if(loaded)return;loaded=true;
     w.dataLayer=w.dataLayer||[];w.dataLayer.push({'gtm.start':Date.now(),event:'gtm.js'});
     var f=d.getElementsByTagName('script')[0],j=d.createElement('script');
-    j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id=GTM-XXXXXXX';
+    j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id=GTM-PVF29H4';
     f.parentNode.insertBefore(j,f);}
   // sobe na 1ª interação OU 3,5s após o load — o que vier primeiro (não atrapalha o LCP)
   ['scroll','pointerdown','keydown','touchstart'].forEach(function(ev){w.addEventListener(ev,loadGTM,{once:true,passive:true});});
@@ -406,8 +406,8 @@ footer a{color:var(--coral-2)}
 </style>
 </head>
 <body>
-<!-- GTM (no-JS): fallback para quem está sem JavaScript. Trocar GTM-XXXXXXX pelo ID real. -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX" height="0" width="0" style="display:none;visibility:hidden" title="gtm"></iframe></noscript>
+<!-- GTM (no-JS): fallback para quem está sem JavaScript. -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PVF29H4" height="0" width="0" style="display:none;visibility:hidden" title="gtm"></iframe></noscript>
 
 <!-- MARQUEE -->
 <div class="marquee" aria-hidden="true"><div class="t">
