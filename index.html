@@ -968,7 +968,7 @@ function handleLead(form, onDone, goCheckout){
     if(LEAD_WEBHOOK){try{
       var q=new URLSearchParams(location.search);
       var payload=Object.assign({},data,{
-        evento:'lead', event_id:eid, curso:'PCM São Paulo Out-Nov 2026',
+        evento:'lead', event_id:eid, curso:'PCM São Paulo Out-Nov 2026', form_name:'Checkout Pré Populado PCM SP',
         valor:VALOR, moeda:'BRL', pagina:location.href, enviado_em:new Date().toISOString(),
         utm_source:q.get('utm_source')||'', utm_medium:q.get('utm_medium')||'',
         utm_campaign:q.get('utm_campaign')||'', utm_content:q.get('utm_content')||'', utm_term:q.get('utm_term')||'',
