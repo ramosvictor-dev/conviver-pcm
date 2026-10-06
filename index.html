@@ -866,6 +866,7 @@ var TEL=(function(){
   function cur(el){return state.get(el)||C[0];}
   function reformat(el){var c=cur(el);el.value=c.d==='55'?maskBR(el.value):dig(el.value).slice(0,15);}
   function info(el){var c=cur(el),d=dig(el.value);
+    if(c.d==='55'){if(d.length>11&&d.slice(0,2)==='55')d=d.slice(2);if(d.length===12&&d.charAt(0)==='0')d=d.slice(1);}
     var valid=c.d==='55'?(d.length===10||d.length===11):(d.length>=6&&d.length<=15);
     return {e164:c.d+d,display:'+'+c.d+' '+el.value.trim(),ddi:'+'+c.d,iso:c.i,national:d,valid:valid};}
   function tel(el){return el.closest('.tel');}
@@ -965,6 +966,7 @@ function handleLead(form, onDone, goCheckout){
     // Google Ads/GA via GTM: configure um gatilho no evento "lead_pcm"
     window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'lead_pcm',value:VALOR,currency:'BRL'});
     // Envia o lead para o comercial (n8n/CRM) — integrar em LEAD_WEBHOOK
+    var leadSent=null;
     if(LEAD_WEBHOOK){try{
       var q=new URLSearchParams(location.search);
       var payload=Object.assign({},data,{
@@ -974,12 +976,12 @@ function handleLead(form, onDone, goCheckout){
         utm_campaign:q.get('utm_campaign')||'', utm_content:q.get('utm_content')||'', utm_term:q.get('utm_term')||'',
         fbp:getCookie('_fbp'), fbc:getCookie('_fbc')
       });
-      fetch(LEAD_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),keepalive:true});
+      leadSent=fetch(LEAD_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),keepalive:true}).catch(function(){});
     }catch(_){}}
     console.log('LEAD →', data);
     onDone();
-    // Depois do lead, segue para o checkout (se configurado)
-    if(goCheckout&&CHECKOUT_URL){var u=new URL(CHECKOUT_URL);(new URLSearchParams(location.search)).forEach(function(v,k){u.searchParams.set(k,v)});setTimeout(function(){location.href=u.toString()},1400);}
+    // Depois do lead, segue para o checkout (se configurado) — só navega depois que o lead chegou (ou 3s de teto), p/ não cortar o envio no mobile
+    if(goCheckout&&CHECKOUT_URL){var u=new URL(CHECKOUT_URL);(new URLSearchParams(location.search)).forEach(function(v,k){u.searchParams.set(k,v)});var go=function(){location.href=u.toString()};if(leadSent&&leadSent.then){Promise.race([leadSent,new Promise(function(r){setTimeout(r,3000)})]).then(go);}else{setTimeout(go,1200);}}
   });
 }
 handleLead(document.getElementById('leadFormModal'),function(){
