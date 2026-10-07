@@ -976,7 +976,10 @@ function handleLead(form, onDone, goCheckout){
         utm_campaign:q.get('utm_campaign')||'', utm_content:q.get('utm_content')||'', utm_term:q.get('utm_term')||'',
         fbp:getCookie('_fbp'), fbc:getCookie('_fbc')
       });
-      leadSent=fetch(LEAD_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),keepalive:true}).catch(function(){});
+      // Envio blindado: sendBeacon (sobrevive ao redirect no navegador do app) com fetch como reserva
+      var _body=JSON.stringify(payload);var _sent=false;
+      if(navigator.sendBeacon){try{_sent=navigator.sendBeacon(LEAD_WEBHOOK,new Blob([_body],{type:'text/plain;charset=UTF-8'}));}catch(_e){_sent=false;}}
+      if(!_sent){leadSent=fetch(LEAD_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:_body,keepalive:true}).catch(function(){});}
     }catch(_){}}
     console.log('LEAD →', data);
     onDone();
