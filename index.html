@@ -25,20 +25,9 @@
 <meta property="og:description" content="Certificação internacional PCMA de 22h. Teoria + prática supervisionada. Vagas limitadas em São Paulo.">
 <meta property="og:image" content="assets/capa-maior.webp">
 
-<!-- ============== META PIXEL (no head, antes de tudo, fora do GTM) ============== -->
-<script>
-!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
-n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
-document,'script','https://connect.facebook.net/en_US/fbevents.js');
-fbq('init','123997336332020');
-fbq('track','PageView');
-</script>
-<noscript><img height="1" width="1" style="display:none" alt=""
- src="https://www.facebook.com/tr?id=123997336332020&ev=PageView&noscript=1"></noscript>
+<!-- Meta Pixel 100% no GTM (removido da pagina para nao duplicar) -->
 
-<!-- ============== GOOGLE TAG MANAGER (adiado, só Google Ads/Analytics — NUNCA o Pixel da Meta) ==============
+<!-- ============== GOOGLE TAG MANAGER (adiado, só Google Ads/Analytics — AGORA tambem o Pixel da Meta) ==============
      Container: GTM-PVF29H4 -->
 <script>
 (function(w,d){var loaded=false;
@@ -924,7 +913,7 @@ document.querySelectorAll('.rv').forEach(function(el){io.observe(el)});})();
 /* ====== VIEWCONTENT a 50% ====== */
 (function(){var fired=false;window.addEventListener('scroll',function(){
   if(fired)return;var sc=(window.scrollY+window.innerHeight)/document.body.scrollHeight;
-  if(sc>=.5){fired=true;if(window.fbq)fbq('track','ViewContent',{content_name:'PCM SP Out-Nov 2026'});}
+  if(sc>=.5){fired=true;/* ViewContent: GTM */}
 },{passive:true});})();
 
 /* ====== DEPOIMENTOS: fachada Vimeo (injeta iframe no clique) ====== */
@@ -960,11 +949,11 @@ function handleLead(form, onDone, goCheckout){
     }
     var eid=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():String(Date.now());
     // Lead (evento principal p/ o comercial)
-    if(window.fbq)fbq('track','Lead',{content_name:'PCM SP Out-Nov 2026'},{eventID:eid});
+    /* Lead: GTM */
     // InitiateCheckout — mantém o nome que a campanha já otimiza (dispara 1x/sessão)
-    if(!icFired&&window.fbq){icFired=true;fbq('track','InitiateCheckout',{content_name:'PCM SP Out-Nov 2026',value:VALOR,currency:'BRL'});}
+    /* InitiateCheckout: GTM */
     // Google Ads/GA via GTM: configure um gatilho no evento "lead_pcm"
-    window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'lead_pcm',value:VALOR,currency:'BRL'});
+    window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'lead',value:VALOR,currency:'BRL',event_id:eid});
     // Envia o lead para o comercial (n8n/CRM) — integrar em LEAD_WEBHOOK
     var leadSent=null;
     if(LEAD_WEBHOOK){try{
