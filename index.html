@@ -953,7 +953,7 @@ function handleLead(form, onDone, goCheckout){
     // InitiateCheckout — mantém o nome que a campanha já otimiza (dispara 1x/sessão)
     /* InitiateCheckout: GTM */
     // Google Ads/GA via GTM: configure um gatilho no evento "lead_pcm"
-    window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'lead',value:VALOR,currency:'BRL',event_id:eid});
+    window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'form_submit',value:VALOR,currency:'BRL',event_id:eid});
     // Envia o lead para o comercial (n8n/CRM) — integrar em LEAD_WEBHOOK
     var leadSent=null;
     if(LEAD_WEBHOOK){try{
