@@ -976,10 +976,9 @@ function handleLead(form, onDone, goCheckout){
         utm_campaign:q.get('utm_campaign')||'', utm_content:q.get('utm_content')||'', utm_term:q.get('utm_term')||'',
         fbp:getCookie('_fbp'), fbc:getCookie('_fbc')
       });
-      // Envio blindado: sendBeacon (sobrevive ao redirect no navegador do app) com fetch como reserva
-      var _body=JSON.stringify(payload);var _sent=false;
-      if(navigator.sendBeacon){try{_sent=navigator.sendBeacon(LEAD_WEBHOOK,new Blob([_body],{type:'text/plain;charset=UTF-8'}));}catch(_e){_sent=false;}}
-      if(!_sent){leadSent=fetch(LEAD_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:_body,keepalive:true}).catch(function(){});}
+      // Make: fetch application/json (o webhook do Make so parseia JSON; o beacon text/plain nao era separado em campos). Backup abaixo cobre o webview.
+      var _body=JSON.stringify(payload);
+      leadSent=fetch(LEAD_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:_body,keepalive:true}).catch(function(){});
       // Backup independente: planilha propria (Apps Script) - alem do Make
       try{var _sheet="https://script.google.com/macros/s/AKfycbxCM2-afGjKc_Dvb00IE6BcYod2yvu6wTP3n3Ltdz2W7DmNy4aS0HW741XxZ4P-fxcK/exec";if(navigator.sendBeacon){navigator.sendBeacon(_sheet,new Blob([_body],{type:'text/plain;charset=UTF-8'}));}else{fetch(_sheet,{method:'POST',body:_body,keepalive:true}).catch(function(){});}}catch(_s){}
     }catch(_){}}
