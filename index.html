@@ -27,7 +27,7 @@
 
 <!-- Meta Pixel 100% no GTM (removido da pagina para nao duplicar) -->
 
-<!-- ============== GOOGLE TAG MANAGER (adiado, só Google Ads/Analytics — AGORA tambem o Pixel da Meta) ==============
+<!-- ============== GOOGLE TAG MANAGER (imediato, só Google Ads/Analytics — AGORA tambem o Pixel da Meta) ==============
      Container: GTM-PVF29H4 -->
 <script>
 (function(w,d){var loaded=false;
@@ -36,9 +36,8 @@
     var f=d.getElementsByTagName('script')[0],j=d.createElement('script');
     j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id=GTM-PVF29H4';
     f.parentNode.insertBefore(j,f);}
-  // sobe na 1ª interação OU 3,5s após o load — o que vier primeiro (não atrapalha o LCP)
-  ['scroll','pointerdown','keydown','touchstart'].forEach(function(ev){w.addEventListener(ev,loadGTM,{once:true,passive:true});});
-  w.addEventListener('load',function(){setTimeout(loadGTM,3500);});
+  // carrega imediatamente: PageView na hora, p/ connect rate fidedigno
+  loadGTM();
 })(window,document);
 </script>
 
